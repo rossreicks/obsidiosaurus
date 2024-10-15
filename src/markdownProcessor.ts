@@ -166,7 +166,6 @@ function processUrlParts(urlParts: string[], isBlog: boolean): string[] {
     if (!isBlog) {
         urlParts = urlParts.map(part => removeNumberPrefix(part));
     }
-    
     if (anchor) {
       urlParts[urlParts.length - 1] = urlParts[urlParts.length - 1] + "#" + anchor.split("%20").join("-").toLowerCase();
     }
@@ -209,9 +208,10 @@ function checkForAssets(line: string, processedFileName: string, assetJson: Asse
         // eslint-disable-next-line prefer-const
         let { size, path } = match.groups;
         const fileNameWithExtension = path.split('/').pop();
-        // eslint-disable-next-line prefer-const
-        //@ts-ignore
-        let [fileName, fileExtension] = fileNameWithExtension.split('.');
+        const lastDotIndex = fileNameWithExtension.lastIndexOf(".");
+
+        let fileName = fileNameWithExtension.slice(0, lastDotIndex);
+        let fileExtension = fileNameWithExtension.slice(lastDotIndex + 1);
         fileName = fileName.replace(/ /g, "_");
         fileName = fileName.replace(/%20/g, "_");
 
